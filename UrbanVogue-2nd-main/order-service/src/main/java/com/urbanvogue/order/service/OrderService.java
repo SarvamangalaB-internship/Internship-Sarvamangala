@@ -31,9 +31,9 @@ public class OrderService {
     @Value("${notification.service.url}")
     private String notificationServiceUrl;
 
-    // ─────────────────────────────────────────
+
     // CREATE: Place a new order
-    // ─────────────────────────────────────────
+
     public Order placeOrder(OrderRequest request) {
 
         // ── VALIDATION BLOCK ──
@@ -166,16 +166,16 @@ public class OrderService {
         return savedOrder;
     }
 
-    // ─────────────────────────────────────────
+
     // READ: Get all orders
-    // ─────────────────────────────────────────
+
     public List<Order> getAllOrders() {
         return orderRepository.findAll();
     }
 
-    // ─────────────────────────────────────────
+
     // READ: Get one order by ID
-    // ─────────────────────────────────────────
+
     public Order getOrderById(Long id) {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException(
@@ -183,9 +183,9 @@ public class OrderService {
                 ));
     }
 
-    // ─────────────────────────────────────────
+
     // READ: All orders for a customer
-    // ─────────────────────────────────────────
+
     public List<Order> getOrdersByCustomer(String username) {
         List<Order> orders = orderRepository
                 .findByCustomerUsername(username);
@@ -197,9 +197,9 @@ public class OrderService {
         return orders;
     }
 
-    // ─────────────────────────────────────────
+
     // UPDATE: Change order status
-    // ─────────────────────────────────────────
+
     public Order updateOrderStatus(Long id, String newStatus) {
 
         List<String> validStatuses = List.of(
@@ -258,9 +258,9 @@ public class OrderService {
         return updatedOrder;
     }
 
-    // ─────────────────────────────────────────
+
     // CANCEL: Cancel order + restore stock
-    // ─────────────────────────────────────────
+
     public String cancelOrder(Long id) {
         Order order = getOrderById(id);
 

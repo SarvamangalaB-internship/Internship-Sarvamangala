@@ -15,9 +15,8 @@ public class NotificationService {
         @Autowired
         private NotificationRepository notificationRepository;
 
-        // ─────────────────────────────────────────
         // SEND: Create and send a notification
-        // ─────────────────────────────────────────
+
         public Notification sendNotification(
                         NotificationRequest request) {
 
@@ -100,9 +99,9 @@ public class NotificationService {
                 return sendNotification(request);
         }
 
-        // ─────────────────────────────────────────
+
         // PREDEFINED: Payment Success Notification
-        // ─────────────────────────────────────────
+
         public Notification notifyPaymentSuccess(
                         String username, Long orderId,
                         Double amount, String transactionId) {
@@ -121,9 +120,9 @@ public class NotificationService {
                 return sendNotification(request);
         }
 
-        // ─────────────────────────────────────────
+
         // PREDEFINED: Payment Failed Notification
-        // ─────────────────────────────────────────
+
         public Notification notifyPaymentFailed(
                         String username, Long orderId,
                         Double amount) {
@@ -142,9 +141,9 @@ public class NotificationService {
                 return sendNotification(request);
         }
 
-        // ─────────────────────────────────────────
+
         // PREDEFINED: Order Shipped Notification
-        // ─────────────────────────────────────────
+
         public Notification notifyOrderShipped(
                         String username, Long orderId) {
 
@@ -163,9 +162,9 @@ public class NotificationService {
                 return sendNotification(request);
         }
 
-        // ─────────────────────────────────────────
+
         // PREDEFINED: Order Delivered Notification
-        // ─────────────────────────────────────────
+
         public Notification notifyOrderDelivered(
                         String username, Long orderId) {
 
@@ -185,9 +184,9 @@ public class NotificationService {
                 return sendNotification(request);
         }
 
-        // ─────────────────────────────────────────
+
         // PREDEFINED: Order Cancelled Notification
-        // ─────────────────────────────────────────
+
         public Notification notifyOrderCancelled(
                         String username, Long orderId) {
 
@@ -207,9 +206,9 @@ public class NotificationService {
                 return sendNotification(request);
         }
 
-        // ─────────────────────────────────────────
+
         // PREDEFINED: Refund Initiated Notification
-        // ─────────────────────────────────────────
+
         public Notification notifyRefundInitiated(
                         String username, Long orderId, Double amount) {
 
@@ -249,9 +248,9 @@ public class NotificationService {
                 return sendNotification(request);
         }
 
-        // ─────────────────────────────────────────
+
         // GET: All notifications for a user
-        // ─────────────────────────────────────────
+
         public List<Notification> getUserNotifications(
                         String username) {
 
@@ -265,33 +264,33 @@ public class NotificationService {
                 return notifications;
         }
 
-        // ─────────────────────────────────────────
+
         // GET: All notifications (Admin)
-        // ─────────────────────────────────────────
+
         public List<Notification> getAllNotifications() {
                 return notificationRepository.findAll();
         }
 
-        // ─────────────────────────────────────────
+
         // GET: One notification by ID
-        // ─────────────────────────────────────────
+
         public Notification getNotificationById(Long id) {
                 return notificationRepository.findById(id)
                                 .orElseThrow(() -> new RuntimeException(
                                                 "Notification not found with id: " + id));
         }
 
-        // ─────────────────────────────────────────
+
         // GET: By type
-        // ─────────────────────────────────────────
+
         public List<Notification> getByType(String type) {
                 return notificationRepository
                                 .findByType(type.toUpperCase());
         }
 
-        // ─────────────────────────────────────────
+
         // GET: By status
-        // ─────────────────────────────────────────
+
         public List<Notification> getByStatus(String status) {
                 return notificationRepository
                                 .findByStatus(status.toUpperCase());
@@ -308,10 +307,10 @@ public class NotificationService {
                 return true;
         }
 
-        // ─────────────────────────────────────────
+
         // PRIVATE: Print notification to console
         // This simulates what email/SMS would look like
-        // ─────────────────────────────────────────
+
         private void printNotification(Notification n) {
                 System.out.println(
                                 "\n");

@@ -13,11 +13,11 @@ public class PaymentResponse {
     private String paymentMethod;
     private String message;
 
-    // ✅ Explicit no-args constructor
+    //  Explicit no-args constructor
     public PaymentResponse() {
     }
 
-    // ✅ Explicit all-args constructor
+    //  Explicit all-args constructor
     public PaymentResponse(Long paymentId, Long orderId,
                            String transactionId, String status,
                            Double amount, String paymentMethod,

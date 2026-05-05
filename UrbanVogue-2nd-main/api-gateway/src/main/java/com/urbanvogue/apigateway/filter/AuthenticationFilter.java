@@ -57,7 +57,7 @@ public class AuthenticationFilter extends
                 String username =
                         jwtUtil.extractUsername(authHeader);
 
-                // ✅ CORRECT WAY — must use exchange.mutate()
+                // CORRECT WAY — must use exchange.mutate()
                 ServerWebExchange mutatedExchange = exchange
                         .mutate()
                         .request(exchange.getRequest()
@@ -71,7 +71,7 @@ public class AuthenticationFilter extends
 
             } catch (Exception e) {
                 System.out.println(
-                        "❌ Invalid token: " + e.getMessage()
+                        " Invalid token: " + e.getMessage()
                 );
                 exchange.getResponse()
                         .setStatusCode(HttpStatus.UNAUTHORIZED);
@@ -94,4 +94,3 @@ public class AuthenticationFilter extends
     public static class Config { }
 }
 
-//

@@ -9,7 +9,7 @@ public class PaymentRequest {
     private String customerUsername;
     private Double amount;
 
-    // "UPI", "CARD", "NETBANKING", "COD"
+    // "UPI", "CARD" , "COD"
     private String paymentMethod;
 
     public Long getOrderId() {

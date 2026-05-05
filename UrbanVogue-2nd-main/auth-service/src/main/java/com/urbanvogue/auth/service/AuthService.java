@@ -18,9 +18,6 @@ public class AuthService {
 
     /**
      * Registers a new user.
-     * Note: In your new AuthController, the password is encoded before
-     * calling this service. However, it's good practice to keep this
-     * logic here as a fallback or if you call this from elsewhere.
      */
     public User register(User user) {
         // If the controller didn't encode it yet, we do it here.
@@ -33,7 +30,7 @@ public class AuthService {
         userRepository.findByUsername(username)
                 .ifPresent(user -> {
                     userRepository.delete(user);
-                    System.out.println("✅ Deleted user from Auth DB: " + username);
+                    System.out.println(" Deleted user from Auth DB: " + username);
                 });
     }
 }

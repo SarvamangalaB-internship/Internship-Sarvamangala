@@ -31,19 +31,19 @@ public class PaymentService {
     @Value("${payment.simulation.success-rate}")
     private double successRate;
 
-    // ─────────────────────────────────────────
+
     // INITIATE: Start a new payment
-    // ─────────────────────────────────────────
+
     public PaymentResponse initiatePayment(PaymentRequest request) {
 
-        // ── BUSINESS RULE 1: Amount must be positive ──
+        //  BUSINESS RULE 1: Amount must be positive ──
         if (request.getAmount() == null || request.getAmount() <= 0) {
             throw new RuntimeException(
                     "Payment amount must be greater than zero."
             );
         }
 
-        // ── BUSINESS RULE 2: Payment method required ──
+        // BUSINESS RULE 2: Payment method required ──
         if (request.getPaymentMethod() == null ||
                 request.getPaymentMethod().trim().isEmpty()) {
             throw new RuntimeException(
@@ -52,7 +52,7 @@ public class PaymentService {
             );
         }
 
-        // ── BUSINESS RULE 3: Valid payment method ──
+        // BUSINESS RULE 3: Valid payment method ──
         List<String> validMethods = List.of(
                 "UPI", "CARD", "NETBANKING", "COD"
         );
@@ -65,7 +65,7 @@ public class PaymentService {
             );
         }
 
-        // ── BUSINESS RULE 4: No duplicate payment for same order ──
+        //  BUSINESS RULE 4: No duplicate payment for same order ──
         paymentRepository.findByOrderId(request.getOrderId())
                 .ifPresent(existing -> {
                     throw new RuntimeException(
@@ -76,15 +76,15 @@ public class PaymentService {
                     );
                 });
 
-        // ── STEP 1: Generate unique transaction ID ──
-        // Format: UV-TXN-A1B2C3D4
+        // STEP 1: Generate unique transaction ID ──
+        // LIKE- UV-TXN-A1B2C3D4
         String transactionId = "UV-TXN-" +
                 UUID.randomUUID()
                         .toString()
                         .substring(0, 8)
                         .toUpperCase();
 
-        // ── STEP 2: Create PENDING payment record ──
+        //  STEP 2: Create PENDING payment record ──
         Payment payment = new Payment();
         payment.setOrderId(request.getOrderId());
         payment.setCustomerUsername(request.getCustomerUsername());
@@ -97,28 +97,28 @@ public class PaymentService {
         payment.setCreatedAt(LocalDateTime.now());
         payment.setUpdatedAt(LocalDateTime.now());
 
-        // ── STEP 3: Save PENDING first ──
+        // STEP 3: Save PENDING first ──
         Payment saved = paymentRepository.save(payment);
 
-        // ── STEP 4: Simulate payment gateway ──
+        // STEP 4: Simulate payment gateway ──
         // COD always succeeds
         // Others: 80% success rate
         boolean paymentSuccess = simulateGateway(
                 request.getPaymentMethod()
         );
 
-        // ── STEP 5: Update based on gateway result ──
+        // STEP 5: Update based on gateway result ──
         if (paymentSuccess) {
 
             saved.setStatus("SUCCESS");
             saved.setUpdatedAt(LocalDateTime.now());
             paymentRepository.save(saved);
 
-            // ── STEP 6: Tell Order Service payment succeeded ──
+            // STEP 6: Tell Order Service payment succeeded ──
             // Update order status to CONFIRMED
             updateOrderStatus(request.getOrderId(), "CONFIRMED");
 
-            // ── STEP 7: Clear the Cart ──
+            // STEP 7: Clear the Cart ──
             clearCustomerCart(request.getCustomerUsername());
 
             return new PaymentResponse(
@@ -156,9 +156,8 @@ public class PaymentService {
         }
     }
 
-    // ─────────────────────────────────────────
     // REFUND: Reverse a successful payment
-    // ─────────────────────────────────────────
+
     public PaymentResponse processRefund(String transactionId) {
 
         Payment payment = paymentRepository
@@ -168,7 +167,7 @@ public class PaymentService {
                                 "transaction ID: " + transactionId
                 ));
 
-        // ── BUSINESS RULE: Only SUCCESS can be refunded ──
+        //  BUSINESS RULE: Only SUCCESS can be refunded
         if (!payment.getStatus().equals("SUCCESS")) {
             throw new RuntimeException(
                     "Cannot refund payment. " +
@@ -197,9 +196,9 @@ public class PaymentService {
         );
     }
 
-    // ─────────────────────────────────────────
+
     // GET: Payment by order ID
-    // ─────────────────────────────────────────
+
     public Payment getPaymentByOrderId(Long orderId) {
         return paymentRepository.findByOrderId(orderId)
                 .orElseThrow(() -> new RuntimeException(
@@ -207,9 +206,9 @@ public class PaymentService {
                 ));
     }
 
-    // ─────────────────────────────────────────
+
     // GET: Payment by transaction ID
-    // ─────────────────────────────────────────
+
     public Payment getPaymentByTransactionId(String transactionId) {
         return paymentRepository
                 .findByTransactionId(transactionId)
@@ -219,9 +218,9 @@ public class PaymentService {
                 ));
     }
 
-    // ─────────────────────────────────────────
+
     // GET: All payments for a customer
-    // ─────────────────────────────────────────
+
     public List<Payment> getPaymentsByCustomer(String username) {
         List<Payment> payments = paymentRepository
                 .findByCustomerUsername(username);
@@ -233,16 +232,16 @@ public class PaymentService {
         return payments;
     }
 
-    // ─────────────────────────────────────────
+
     // GET: All payments (Admin view)
-    // ─────────────────────────────────────────
+
     public List<Payment> getAllPayments() {
         return paymentRepository.findAll();
     }
 
-    // ─────────────────────────────────────────
+
     // GET: Payments by status
-    // ─────────────────────────────────────────
+
     public List<Payment> getPaymentsByStatus(String status) {
         return paymentRepository.findByStatus(status.toUpperCase());
     }
@@ -260,9 +259,9 @@ public class PaymentService {
         return Math.random() < successRate;
     }
 
-    // ─────────────────────────────────────────
+
     // PRIVATE: Notify Order Service of payment result
-    // ─────────────────────────────────────────
+
     private void updateOrderStatus(Long orderId, String newStatus) {
         try {
             String url = orderServiceUrl +
@@ -283,9 +282,9 @@ public class PaymentService {
         }
     }
 
-    // ─────────────────────────────────────────
+
     // PRIVATE: Clear Cart on successful payment
-    // ─────────────────────────────────────────
+
     private void clearCustomerCart(String username) {
         if (username == null) return;
         try {

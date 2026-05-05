@@ -39,7 +39,7 @@ public class AuthController {
     @Value("${user.service.url}")
     private String userServiceUrl;
 
-    // ── REGISTER (Amazon-style: One form creates both auth + profile) ──
+    // ── REGISTER (One form creates both auth + profile) ──
     @PostMapping("/register")
     public Map<String, Object> register(@RequestBody RegistrationRequest request) {
         Map<String, Object> response = new HashMap<>();
@@ -66,9 +66,9 @@ public class AuthController {
             try {
                 String profileUrl = userServiceUrl + "/api/users";
                 restTemplate.postForObject(profileUrl, profileData, Object.class);
-                System.out.println("✅ User profile created for: " + request.getUsername());
+                System.out.println(" User profile created for: " + request.getUsername());
             } catch (Exception e) {
-                System.err.println("⚠️ Could not create user profile: " + e.getMessage());
+                System.err.println("Could not create user profile: " + e.getMessage());
             }
 
             // ── Notify: Send welcome email ──
@@ -78,7 +78,7 @@ public class AuthController {
                         request.getUsername();
                 restTemplate.postForObject(notifyUrl, null, Object.class);
             } catch (Exception e) {
-                System.err.println("⚠️ Could not send welcome notification: " + e.getMessage());
+                System.err.println("Could not send welcome notification: " + e.getMessage());
             }
 
             response.put("success", true);
@@ -110,7 +110,7 @@ public class AuthController {
             // 3. SECURE MATCHING
             // matches(Raw_Password, Encoded_Password_from_DB)
             if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-                System.err.println("❌ Password mismatch for user: " + loginRequest.getUsername());
+                System.err.println(" Password mismatch for user: " + loginRequest.getUsername());
                 throw new RuntimeException("Invalid Credentials");
             }
 
@@ -128,7 +128,7 @@ public class AuthController {
 
                 restTemplate.postForObject(notifyUrl, notificationBody, Object.class);
             } catch (Exception e) {
-                System.err.println("⚠️ Notification failed: " + e.getMessage());
+                System.err.println(" Notification failed: " + e.getMessage());
             }
 
             response.put("success", true);
