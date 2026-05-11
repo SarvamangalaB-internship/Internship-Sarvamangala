@@ -10,7 +10,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    // ✅ THIS BEAN is what AuthController and AuthService @Autowire
+    // THIS BEAN is what AuthController and AuthService @Autowire
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

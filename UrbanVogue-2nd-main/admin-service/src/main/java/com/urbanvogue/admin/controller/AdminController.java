@@ -47,7 +47,7 @@ public class AdminController {
             @RequestParam double percent) {
         int count = adminService.applyBulkDiscount(category, percent);
         return ResponseEntity.ok(
-                "✅ " + percent + "% discount applied to " + count +
+                " " + percent + "% discount applied to " + count +
                         " products in category: " + category
         );
     }
@@ -60,7 +60,7 @@ public class AdminController {
             @RequestParam int quantity) {
         int count = adminService.restockCategory(category, quantity);
         return ResponseEntity.ok(
-                "✅ Added " + quantity + " units to " + count +
+                " Added " + quantity + " units to " + count +
                         " products in category: " + category
         );
     }

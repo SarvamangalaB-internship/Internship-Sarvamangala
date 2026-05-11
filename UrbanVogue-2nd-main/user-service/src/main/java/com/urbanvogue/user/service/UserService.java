@@ -74,9 +74,9 @@ public class UserService {
         try {
             String url = authServiceUrl + "/api/auth/" + username;
             restTemplate.delete(url);
-            System.out.println("✅ Successfully deleted auth credentials for: " + username);
+            System.out.println("Successfully deleted auth credentials for: " + username);
         } catch (Exception e) {
-            System.err.println("⚠️ Could not delete auth credentials for " + username + ": " + e.getMessage());
+            System.err.println("Could not delete auth credentials for " + username + ": " + e.getMessage());
         }
     }
 

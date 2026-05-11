@@ -158,9 +158,9 @@ public class OrderService {
                     .queryParam("amount", savedOrder.getTotalAmount())
                     .toUriString();
             restTemplate.postForObject(notifyUrl, null, Object.class);
-            System.out.println("✅ Order placed notification sent for Order #" + savedOrder.getId());
+            System.out.println(" Order placed notification sent for Order #" + savedOrder.getId());
         } catch (Exception e) {
-            System.err.println("⚠️ Could not send order placed notification: " + e.getMessage());
+            System.err.println(" Could not send order placed notification: " + e.getMessage());
         }
 
         return savedOrder;

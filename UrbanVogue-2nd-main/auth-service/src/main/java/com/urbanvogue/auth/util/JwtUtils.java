@@ -56,13 +56,13 @@ public class JwtUtils {
                     .setSigningKey(getKey())
                     .build()
                     .parseClaimsJws(token);
-            return true;    // Token is valid ✅
+            return true;    // Token is valid
         } catch (ExpiredJwtException e) {
             System.out.println("Token expired: " + e.getMessage());
-            return false;   // Token expired ❌
+            return false;   // Token expired
         } catch (Exception e) {
             System.out.println("Invalid token: " + e.getMessage());
-            return false;   // Token tampered ❌
+            return false;   // Token tampered
         }
     }
 
